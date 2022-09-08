@@ -1,26 +1,25 @@
 pipeline{
-    agent{
-        label "nodejs"
-    }
+
+    agent any
+
     stages{
-        stage("Install dependencies"){
-            steps{
-                sh "npm ci"
-            }
-        }
 
-        stage("Check Style"){
-            steps{
-                sh "npm run lint"
-            }
-        }
+         stage('Deploy') {
 
-        stage("Test"){
-            steps{
-                sh "npm test"
-            }
-        }
+             steps {
 
-        // Add the "Deploy" stage here
-    }
+                 sh '''
+
+                     oc project rwqjct-deploy-strategies
+
+                     oc start-build greeting-service --follow --wait
+
+                 '''
+
+                }
+
+            }
+
+	}
+
 }
